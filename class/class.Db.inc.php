@@ -93,7 +93,7 @@ abstract class Db {
 
     function bindQueryParams($stmt, $param_type, $param_value_array) {
         $param_value_reference[] = & $param_type;
-        for($i=0; $i<count($param_value_array); $i++) {
+        for($i=0, $j=count($param_value_array); $i<$j; $i++) {
             $param_value_reference[] = & $param_value_array[$i];
         }
         call_user_func_array(array(
