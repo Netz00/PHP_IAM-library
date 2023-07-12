@@ -9,6 +9,7 @@ services:
       - db
     volumes:
       - ./../src:/var/www/html/
+      - ./../../../IAM-lib:/var/www/IAM-lib
     ports:
       - 80:80
   db:
@@ -16,7 +17,6 @@ services:
     networks:
       - IAM-network
     image: mariadb:10.4
-    restart: always
     environment:
       MYSQL_DATABASE: IAM-db
       MYSQL_ROOT_PASSWORD:

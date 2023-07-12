@@ -6,19 +6,17 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 include_once('constants.inc.php');
 
 // load library
-include_once('IAM-lib/loader.inc.php');
+include_once('../IAM-lib/loader.inc.php');
 
-// load other classes
+// load your other classes
 include_once('class.Db.inc.php');
 include_once('class.MyQueries.inc.php');
-
 
 // Some sort of "ControllerAdvice"
 set_exception_handler(function (\Exception $exception) {
     header("Location: " . "/" . "?error=" . $exception->getMessage(),  true,  301);
     die();
 });
-
 
 $myQueries = new MyQueries();
 
@@ -31,11 +29,6 @@ $iam = new IdentityAccessManager(
 );
 
 $user = $iam->isUserLoggedIn();
-
-
-
-// is logged in?
-
 
 if (!empty($_POST)) {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
@@ -53,9 +46,7 @@ if (!empty($_POST)) {
     } else if ($action == 'logout')
         $iam->logout($user);
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +61,6 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-
 
     <!-- Error messages handler -->
     <script>
@@ -89,7 +79,6 @@ if (!empty($_POST)) {
         if (findGetParameter("error"))
             alert(findGetParameter("error"));
     </script>
-
 
     <h1>MySQL implementation</h1>
     <div class="section">
