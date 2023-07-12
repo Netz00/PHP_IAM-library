@@ -8,7 +8,6 @@ $C['PWD_RESET_TABLE'] = "pwdreset";
 
 
 
-$C['MAX_ACC_PER_IP'] = 50; //max number of accounts that can be made from same IP address
 $C['MIN_USERNAME_LENGTH'] = 4;
 
 

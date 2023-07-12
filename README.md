@@ -26,3 +26,8 @@ Example of implementation with MySQL can be found inside ./example directory, [h
 ## Documentation
 
 - DI design pattern is used with singleton classes.
+
+## Todo
+
+- [Multiple users accessing with same account ](https://stackoverflow.com/a/9387369)
+

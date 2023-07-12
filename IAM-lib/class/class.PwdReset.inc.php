@@ -6,13 +6,11 @@ class PwdReset
     private $pwdResetStorage;
     private $credentialsStorage;
     private $kdf;
-    private $helper;
 
-    public function __construct(CredentialsStorage $credentialsStorage, KDF $kdf, Helper $helper, PwdResetStorage $pwdResetStorage)
+    public function __construct(CredentialsStorage $credentialsStorage, KDF $kdf, PwdResetStorage $pwdResetStorage)
     {
         $this->$credentialsStorage = $credentialsStorage;
         $this->$kdf = $kdf;
-        $this->$helper = $helper;
         $this->pwdResetStorage = $pwdResetStorage;
 
         return $this;
@@ -23,7 +21,7 @@ class PwdReset
     public function initiatePwdReset($email)
     {
         if (
-            !$this->helper->isEmailValid($email) ||
+            !Helper::isEmailRegistered($email) ||
             !$this->credentialsStorage->isEmailTaken($email)
         )
             return false;

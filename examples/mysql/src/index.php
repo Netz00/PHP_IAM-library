@@ -5,7 +5,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 // include your settings which will override default ones
 include_once('constants.inc.php');
 
-// load library
+// load library (don't get confused, this is path inside docker container not inside repo!)
 include_once('../IAM-lib/loader.inc.php');
 
 // load your other classes
@@ -24,7 +24,6 @@ $iam = new IdentityAccessManager(
     $myQueries,
     new Session,
     new Sha256(),
-    new Helper(),
     new AuthCookie($myQueries)
 );
 

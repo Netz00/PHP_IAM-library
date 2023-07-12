@@ -2,25 +2,21 @@
 
 class IdentityAccessManager
 {
-
     private $credentialsStorage;
     private $rememberMe;
 
     private $auth;
     private $kdf;
-    private $helper;
 
     function __construct(
         CredentialsStorage $credentialsStorage,
         Authentication $auth,
         KDF $kdf,
-        Helper $helper,
         RememberMe $rememberMe
     ) {
         $this->credentialsStorage = $credentialsStorage;
         $this->auth = $auth;
         $this->kdf = $kdf;
-        $this->helper = $helper;
         $this->rememberMe = $rememberMe;
         return $this;
     }
@@ -28,29 +24,23 @@ class IdentityAccessManager
 
     function register($username, $email, $password)
     {
-        if (!$this->helper->isCorrectLogin($username))
+        if (!Helper::isCorrectLogin($username))
             throw new Exception("Username invalid.");
 
-        if (!$this->helper->isCorrectEmail($email))
+        if (!Helper::isCorrectEmail($email))
             throw new Exception("Email invalid.");
 
-        if (!$this->helper->isCorrectPassword($password))
+        if (!Helper::isCorrectPassword($password))
             throw new Exception("Password invalid.");
 
 
-        // If login or email are taken, mysqli will throwi an error
-
-        if (
-            isset($_SERVER['REMOTE_ADDR'])
-            && $this->credentialsStorage->identitiesPerIP($_SERVER['REMOTE_ADDR']) > MAX_ACC_PER_IP
-        )
-            throw new Exception("IP used too many times.");
+        // If login or email are taken, mysqli will throw an error
 
         $this->credentialsStorage->addUser(
             $username,
             $email,
             $this->kdf->hash($password),
-            $this->helper->ip_addr()
+            Helper::ip_addr()
         );
         header("Location: /",  true,  301);
         exit;
@@ -59,10 +49,10 @@ class IdentityAccessManager
     function login($username, $password, $rememberMe)
     {
 
-        if (!$this->helper->isCorrectLogin($username))
+        if (!Helper::isCorrectLogin($username))
             throw new Exception("Username invalid.");
 
-        if (!$this->helper->isCorrectPassword($password))
+        if (!Helper::isCorrectPassword($password))
             throw new Exception("Password invalid.");
 
 

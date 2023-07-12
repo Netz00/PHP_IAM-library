@@ -36,4 +36,8 @@ class Helper
 
         return $ip_addr;
     }
+
+    static function isEmailRegistered($email)
+    {
+    }
 }

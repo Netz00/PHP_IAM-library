@@ -3,7 +3,6 @@
 class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, RememberMeStorage
 {
 
-
     function addUser($username, $email, $password, $ipAddress)
     {
         $username = $this->quote($username);
@@ -50,23 +49,6 @@ class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, Remem
         }
         return null;
     }
-
-
-    function identitiesPerIP($ipAddress)
-    {
-        $query = "SELECT COUNT(IF(ip_address = ?,1, NULL)) 'Value' FROM " . USERS_TABLE . ";";
-
-        try {
-            $rows = $this->runQuery($query, 's', array($ipAddress));
-            if ($rows)
-                return $rows[0]['Value'];
-        } catch (mysqli_sql_exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
-        }
-        return 1;
-    }
-
-
 
     // ------------------ Remember me ... ------------------
 
@@ -124,7 +106,6 @@ class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, Remem
     function deleteAllUserPwdResetRequests($email)
     {
     }
-
 
     // ------------------ OTHER FUNCTIONS ... ------------------
 
