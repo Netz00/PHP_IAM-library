@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  web:
+    container_name: php-apache
+    networks:
+      - IAM-network
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - ./../src:/var/www/html/
+    ports:
+      - 80:80
+  db:
+    container_name: mysql
+    networks:
+      - IAM-network
+    image: mariadb:10.4
+    restart: always
+    environment:
+      MYSQL_DATABASE: IAM-db
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306" # <Port exposed> : < MySQL Port running inside container>
+      # expose:
+      # Opens port 3306 on the container for other containers
+      # - "3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init_scripts:/docker-entrypoint-initdb.d
+
+volumes:
+  my-db:
+
+
+networks:
+  IAM-network:
+    driver: bridge

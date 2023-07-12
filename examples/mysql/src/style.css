@@ -1,0 +1,84 @@
+body {
+  background: black;
+  color: #00e100;
+  max-width: 1024px;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.single_form {
+  border: 1px solid;
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px 20px;
+  margin: 0px 20px;
+}
+
+form > input {
+  display: block;
+  margin: 12px 0px;
+  background: inherit;
+  color: inherit;
+  padding: 5px;
+  border: 2px solid #009b00;
+}
+
+input[type="checkbox"]:checked::before {
+  background-color: #00aeef;
+}
+
+form input:focus {
+  outline: lime solid 1px;
+  color: lime;
+}
+
+.section {
+  background: #221f1f;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 36px 0px;
+  min-height: 250px;
+  position: relative;
+}
+
+.logout {
+  top: 10px;
+  right: 20px;
+  position: absolute;
+}
+
+.section > h3 {
+  margin: 32px 0px 4px 0px;
+}
+
+input[type="submit"]:hover {
+  outline: lime solid 1px;
+  color: black;
+  background: lime;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+th,
+td {
+  padding-left: 12px;
+}
+
+table {
+  table-layout: fixed;
+  width: 800px;
+}
+
+table th {
+  text-align: start;
+}
+
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
