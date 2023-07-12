@@ -1,17 +1,42 @@
+:root {
+  --color-background-primary: #000000;
+  --color-background-secondary: #202020;
+
+  --color-text: #16ff00;
+  --color-border: #009b00;
+}
+
 body {
-  background: black;
-  color: #00e100;
+  background: var(--color-background-primary);
+  color: var(--color-text);
   max-width: 1024px;
   margin: auto;
   padding-top: 10px;
 }
 
+h2 {
+  margin: 0 0 20px 0;
+}
+.section {
+  background: var(--color-background-secondary);
+  padding: 20px 30px;
+  border-radius: 10px;
+  margin: 36px 0px;
+  min-height: 250px;
+  position: relative;
+}
+
 .single_form {
-  border: 1px solid;
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border);
   display: inline-block;
   vertical-align: top;
   padding: 0px 20px;
-  margin: 0px 20px;
+  margin: 0px 40px 0 0;
+}
+
+.single_form:last-child {
+  margin: 0;
 }
 
 form > input {
@@ -20,25 +45,17 @@ form > input {
   background: inherit;
   color: inherit;
   padding: 5px;
-  border: 2px solid #009b00;
+  border: 1px solid var(--color-border);
 }
 
-input[type="checkbox"]:checked::before {
-  background-color: #00aeef;
+input[type="checkbox"]:not(checked) {
+  /* change "blue" browser chrome to yellow */
+  filter: invert(100%) hue-rotate(18deg) brightness(1.7);
 }
 
 form input:focus {
-  outline: lime solid 1px;
-  color: lime;
-}
-
-.section {
-  background: #221f1f;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 36px 0px;
-  min-height: 250px;
-  position: relative;
+  outline: var(--color-text) solid 1px;
+  color: var(--color-text);
 }
 
 .logout {
@@ -48,19 +65,19 @@ form input:focus {
 }
 
 .section > h3 {
-  margin: 32px 0px 4px 0px;
+  margin: 22px 0px 4px 0px;
 }
 
 input[type="submit"]:hover {
-  outline: lime solid 1px;
-  color: black;
-  background: lime;
+  outline: var(--color-text) solid 1px;
+  color: var(--color-background-primary);
+  background: var(--color-text);
 }
 
 table,
 th,
 td {
-  border: 1px solid;
+  border: 1px solid var(--color-border);
 }
 
 th,
@@ -70,7 +87,7 @@ td {
 
 table {
   table-layout: fixed;
-  width: 800px;
+  width: 900px;
 }
 
 table th {

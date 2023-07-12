@@ -13,6 +13,13 @@ include_once('class.Db.inc.php');
 include_once('class.MyQueries.inc.php');
 
 
+// Some sort of "ControllerAdvice"
+set_exception_handler(function (\Exception $exception) {
+    header("Location: " . "/" . "?error=" . $exception->getMessage(),  true,  301);
+    die();
+});
+
+
 $myQueries = new MyQueries();
 
 $iam = new IdentityAccessManager(
@@ -63,14 +70,35 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-    <h1>Dummy implementation</h1>
-    <h2>With MySQL</h2>
+
+
+    <!-- Error messages handler -->
+    <script>
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function(item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+        if (findGetParameter("error"))
+            alert(findGetParameter("error"));
+    </script>
+
+
+    <h1>MySQL implementation</h1>
     <div class="section">
+        <h2>User space</h2>
         <?php if ($user === null) { ?>
             <div>
                 <div class="single_form">
                     <h3>Register</h3>
-                    <form action="/" method="post">
+                    <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="register">
                         <input type="text" placeholder="Enter Username" name="username" required>
                         <input type="email" placeholder="Enter Email" name="email" required>
@@ -80,7 +108,7 @@ if (!empty($_POST)) {
                 </div>
                 <div class="single_form">
                     <h3>Login</h3>
-                    <form action="/" method="post">
+                    <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="login">
                         <input type="text" placeholder="Enter Username" name="username" required>
                         <input type="password" placeholder="Enter Password" name="password" required>
@@ -93,7 +121,7 @@ if (!empty($_POST)) {
                 </div>
                 <div class="single_form">
                     <h3>Reset password</h3>
-                    <form action="/" method="post">
+                    <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="reset">
                         <input type="email" placeholder="Enter Email" name="email" required>
                         <input type="submit" value="Submit">
@@ -104,7 +132,7 @@ if (!empty($_POST)) {
             <h3>Welcome</h3>
             <h2> <?php echo $user->username ?></h2>
             <div class="logout">
-                <form action="/" method="post">
+                <form action="/" method="post" autocomplete="off">
                     <input type="hidden" name="action" value="logout">
                     <input type="submit" value="Logout">
                 </form>
