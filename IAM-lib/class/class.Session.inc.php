@@ -2,6 +2,26 @@
 
 class Session implements Authentication
 {
+
+    /**
+     * Singleton
+     */
+    private static $instance = null;
+
+    private function __construct()
+    {
+    }
+
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new Session();
+        }
+
+        return self::$instance;
+    }
+
     public function set($userID)
     {
         $_SESSION["user_id"] = $userID;

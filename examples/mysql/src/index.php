@@ -22,7 +22,6 @@ $myQueries = new MyQueries();
 
 $iam = new IdentityAccessManager(
     $myQueries,
-    new Session,
     new AuthCookie($myQueries)
 );
 

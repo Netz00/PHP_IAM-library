@@ -10,11 +10,10 @@ class IdentityAccessManager
 
     function __construct(
         CredentialsStorage $credentialsStorage,
-        Authentication $auth,
         RememberMe $rememberMe
     ) {
         $this->credentialsStorage = $credentialsStorage;
-        $this->auth = $auth;
+        $this->auth = Session::getInstance();
         $this->kdf = Sha256::getInstance();
         $this->rememberMe = $rememberMe;
         return $this;
