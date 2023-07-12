@@ -10,12 +10,25 @@
 class Sha256 implements KDF
 {
 
+    /**
+     * Singleton
+     */
+    private static $instance = null;
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new Sha256();
+        }
+
+        return self::$instance;
+    }
+
     /** @var string[] range of characters for salt generation */
     private $CHARS;
 
     const SALT_LENGTH = 16;
 
-    public function __construct()
+    private function __construct()
     {
         $this->CHARS = self::initCharRange();
     }

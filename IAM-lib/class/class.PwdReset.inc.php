@@ -7,10 +7,10 @@ class PwdReset
     private $credentialsStorage;
     private $kdf;
 
-    public function __construct(CredentialsStorage $credentialsStorage, KDF $kdf, PwdResetStorage $pwdResetStorage)
+    public function __construct(CredentialsStorage $credentialsStorage, PwdResetStorage $pwdResetStorage)
     {
         $this->$credentialsStorage = $credentialsStorage;
-        $this->$kdf = $kdf;
+        $this->kdf = Sha256::getInstance();
         $this->pwdResetStorage = $pwdResetStorage;
 
         return $this;
