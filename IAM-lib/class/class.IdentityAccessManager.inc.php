@@ -13,11 +13,28 @@ class IdentityAccessManager
         RememberMe $rememberMe
     ) {
         $this->credentialsStorage = $credentialsStorage;
-        $this->auth = Session::getInstance();
-        $this->kdf = Sha256::getInstance();
+        $this->auth = new Session();
+        $this->kdf = new Sha256();
         $this->rememberMe = $rememberMe;
         return $this;
     }
+
+    function setThisKDF(KDF $kdf)
+    {
+        $this->kdf = $kdf;
+        return $this;
+    }
+    function setThisAuthentication(Authentication $auth)
+    {
+        $this->auth = $auth;
+        return $this;
+    }
+    function setThisRememberMe(RememberMe $rememberMe)
+    {
+        $this->rememberMe = $rememberMe;
+        return $this;
+    }
+
 
     // ---------------------- Password reset ----------------------
 
