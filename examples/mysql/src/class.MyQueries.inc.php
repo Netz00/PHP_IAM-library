@@ -50,6 +50,40 @@ class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, Remem
         return null;
     }
 
+    function findUserbyEmail($email)
+    {
+        $id = $this->quote($email);
+
+        $query = "SELECT * FROM " . USERS_TABLE . " WHERE email = ? LIMIT 1;";
+
+        try {
+            $rows = $this->runQuery($query, 's', array($email));
+            if ($rows)
+                return $rows[0];
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+        return null;
+    }
+
+
+    function updateIdentityDataByEmail($email, $property, $newValue)
+    {
+        $id = $this->quote($email);
+
+        $query = "UPDATE " . USERS_TABLE . " SET ?=? WHERE email=?;";
+
+        try {
+            $this->update($query, 'sss', array($email, $property, $newValue));
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+        return null;
+    }
+
+
+
+
     // ------------------ Remember me ... ------------------
 
     function saveRememberMe($username, $random_password_hash, $random_selector_hash, $expiry_date)
@@ -99,12 +133,44 @@ class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, Remem
 
     function savePwdResetRequest($email, $selector, $hashedToken, $expires)
     {
+
+        $email = $this->quote($email);
+        $selector = $this->quote($selector);
+        $hashedToken = $this->quote($hashedToken);
+        $expires = $this->quote($expires);
+
+        $query = "INSERT INTO " . PWD_RESET_TABLE . " (pwdResetEmail,pwdResetSelector,pwdResetToken,pwdResetExpires) VALUES (?,?,?,?);";
+        try {
+            $this->insert($query, 'ssss', array($email, $selector, $hashedToken, $expires));
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
     }
-    function findNonExpiredPwdResetRequest($selector, $currentDate)
+    function findValidPwdResetRequest($selector, $currentDate)
     {
+        $selector = $this->quote($selector);
+        $currentDate = $this->quote($currentDate);
+
+        $query = "SELECT pwdResetToken,pwdResetEmail FROM " . PWD_RESET_TABLE . " WHERE pwdResetSelector=? AND pwdResetExpires >= ? LIMIT 1;";
+        try {
+            $rows = $this->runQuery($query, 'ss', array($selector, $currentDate));
+            if ($rows)
+                return $rows[0];
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+        return null;
     }
     function deleteAllUserPwdResetRequests($email)
     {
+        $email = $this->quote($email);
+
+        $query = "DELETE FROM " . PWD_RESET_TABLE . " WHERE pwdResetEmail=?;";
+        try {
+            $this->update($query, 's', array($email));
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
     }
 
     // ------------------ OTHER FUNCTIONS ... ------------------

@@ -24,6 +24,7 @@ $iam = new IdentityAccessManager(
     $myQueries,
     new AuthCookie($myQueries)
 );
+$iam->setPwdReset($myQueries);
 
 $user = $iam->isUserLoggedIn();
 
@@ -39,7 +40,8 @@ if (!empty($_POST)) {
             $iam->register($username, $email, $password);
         else if ($action == 'login')
             $user = $iam->login($username, $password, $rememberMe);
-        // else if ($action == 'reset')
+        else if ($action == 'reset')
+            $iam->createPwdResetRequest($email);
     } else if ($action == 'logout')
         $iam->logout($user);
 }

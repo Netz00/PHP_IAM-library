@@ -4,37 +4,25 @@ class PwdReset
 {
 
     private $pwdResetStorage;
-    private $credentialsStorage;
-    private $kdf;
 
-    public function __construct(CredentialsStorage $credentialsStorage, PwdResetStorage $pwdResetStorage)
+    public function __construct(PwdResetStorage $pwdResetStorage)
     {
-        $this->$credentialsStorage = $credentialsStorage;
-        $this->kdf = Sha256::getInstance();
         $this->pwdResetStorage = $pwdResetStorage;
-
         return $this;
     }
 
-
-    # TODO custom mail class and add exceptions
-    public function initiatePwdReset($email)
+    # TODO custom mail class
+    function createRequest($email)
     {
-        if (
-            !Helper::isEmailRegistered($email) ||
-            !$this->credentialsStorage->isEmailTaken($email)
-        )
-            return false;
-
         $selector = $this->generateSelector();
         $token = $this->generateValidator();
         $url = PWD_RESET_URL . "?selector=" . $selector . "&validator=" . bin2hex($token);
         $hashedToken = password_hash($token, PASSWORD_DEFAULT);
         $expires  = date("Y-m-d H:i:s", $this->getExpirationTime());
 
-        $this->pwdResetStorage->deleteAll($email);
+        $this->pwdResetStorage->deleteAllUserPwdResetRequests($email);
 
-        $this->pwdResetStorage->save($email, $selector, $hashedToken, $expires);
+        $this->pwdResetStorage->savePwdResetRequest($email, $selector, $hashedToken, $expires);
 
         $to = $email;
         $subject = "Password reset";
@@ -44,38 +32,29 @@ class PwdReset
         mail($to, $subject, $message, $header);
     }
 
-    function resetPwd($selector, $validator, $newPassword)
+    function verifyRequest($selector, $validator)
     {
 
-        if (!$this->checkParams($selector, $validator))
-            return false;
+        if (!$this->isHexadecimal($selector) || !$this->isHexadecimal($validator))
+            throw new Exception("Invalid request");
 
-        $current_time = time();
-        $currentDate = date("Y-m-d H:i:s", $current_time);
+        $resetRequest = $this->pwdResetStorage->findValidPwdResetRequest(
+            $selector,
+            date(
+                "Y-m-d H:i:s",
+                time()
+            )
+        );
 
+        if (
+            $resetRequest == NULL
+            || !password_verify(hex2Bin($validator), $resetRequest["token"])
+        )
+            throw new Exception("Invalid request");
 
-        $resetRequest = $this->pwdResetStorage->findNonExpired($selector, $currentDate);
+        $this->pwdResetStorage->deleteAllUserPwdResetRequests($resetRequest["email"]);
 
-        if ($resetRequest == NULL)
-            return false;
-
-
-        $token = $resetRequest["token"];
-        $email = $resetRequest["email"];
-
-        $tokenBin = hex2Bin($validator);
-
-        if (!password_verify($tokenBin, $token)) {
-            return false;
-        }
-
-        $this->pwdResetStorage->deleteAll($email);
-
-        $newPwdHash = $this->kdf->hash($newPassword);
-
-        $this->credentialsStorage->updatePassword($email, $newPwdHash);
-
-        return true;
+        return $resetRequest["email"];
     }
 
     private function generateSelector()
@@ -93,14 +72,9 @@ class PwdReset
         return time() + PWD_RESET_REQ_EXPIRATION_TIME;
     }
 
-    private function checkParams($selector, $validator)
+    private function isHexadecimal($string)
     {
-        if (
-            !empty($selector)
-            && !empty($validator)
-            && ctype_xdigit($selector) == true
-            && ctype_xdigit($validator) == true
-        )
+        if (!empty($string) && ctype_xdigit($string))
             return true;
 
         return false;

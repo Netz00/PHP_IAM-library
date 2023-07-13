@@ -19,6 +19,42 @@ class IdentityAccessManager
         return $this;
     }
 
+    // ---------------------- Password reset ----------------------
+
+    private $pwdReset;
+    function setPwdReset(PwdResetStorage $pwdResetStorage)
+    {
+        $this->pwdReset = new PwdReset($pwdResetStorage);
+    }
+
+    function createPwdResetRequest($email)
+    {
+        if (!Helper::isCorrectEmail($email))
+            throw new Exception("Email invalid.");
+
+        $userArray = $this->credentialsStorage->findUserbyEmail($email);
+
+        if ($userArray == null)
+            throw new Exception("Email invalid.");
+
+        $this->pwdReset->createRequest($userArray["email"]);
+
+        return true;
+    }
+    function resetPwd($selector, $validator, $newPassword)
+    {
+        if (!Helper::isCorrectPassword($newPassword))
+            throw new Exception("Password invalid.");
+
+        $this->credentialsStorage->updateIdentityDataByEmail(
+            $this->pwdReset->verifyRequest($selector, $validator, $newPassword),
+            "password",
+            $this->kdf->hash($newPassword)
+        );
+    }
+
+    // -----------------------------------------------------------
+
 
     function register($username, $email, $password)
     {

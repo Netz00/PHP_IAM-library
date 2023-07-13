@@ -12,7 +12,7 @@ class Helper
 
     static function isCorrectEmail($email)
     {
-        if (preg_match('/[0-9a-z_-]+@[-0-9a-z_^\.]+\.[a-z]{2,3}/i', $email))
+        if (preg_match('/[0-9a-z_-]+@[-0-9a-z_^\.]+\.[a-z]{2,63}$/i', $email))
             return true;
 
         return false;
@@ -35,9 +35,5 @@ class Helper
         if (isset($_SERVER['REMOTE_ADDR'])) $ip_addr = $_SERVER['REMOTE_ADDR'];
 
         return $ip_addr;
-    }
-
-    static function isEmailRegistered($email)
-    {
     }
 }
