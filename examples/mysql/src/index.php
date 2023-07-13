@@ -85,7 +85,7 @@ if (!empty($_POST)) {
         <?php if ($user === null) { ?>
             <div>
                 <div class="single_form">
-                    <h3>Register</h3>
+                    <h3>Register 🪤</h3>
                     <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="register">
                         <input type="text" placeholder="Enter Username" name="username" required>
@@ -95,7 +95,7 @@ if (!empty($_POST)) {
                     </form>
                 </div>
                 <div class="single_form">
-                    <h3>Login</h3>
+                    <h3>Login 🔐</h3>
                     <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="login">
                         <input type="text" placeholder="Enter Username" name="username" required>
@@ -108,7 +108,7 @@ if (!empty($_POST)) {
                     </form>
                 </div>
                 <div class="single_form">
-                    <h3>Reset password</h3>
+                    <h3>Reset password 🤔</h3>
                     <form action="/" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="reset">
                         <input type="email" placeholder="Enter Email" name="email" required>
@@ -118,11 +118,11 @@ if (!empty($_POST)) {
             </div>
         <?php } else { ?>
             <h3>Welcome</h3>
-            <h2> <?php echo $user->username ?></h2>
+            <h2> <?php echo $user->username ?> 🎉</h2>
             <div class="logout">
                 <form action="/" method="post" autocomplete="off">
                     <input type="hidden" name="action" value="logout">
-                    <input type="submit" value="Logout">
+                    <input type="submit" value="Logout 🔒">
                 </form>
             </div>
         <?php } ?>
@@ -130,8 +130,8 @@ if (!empty($_POST)) {
 
 
     <div class="section">
-        <h2>Storage preview</h2>
-        <h3>Users table</h3>
+        <h2>Storage preview 👀</h2>
+        <h3>Users table 👤</h3>
         <?php $allUsers = $myQueries->findAllUsers();
         if ($allUsers) { ?>
             <table>
@@ -154,7 +154,7 @@ if (!empty($_POST)) {
         <?php } else {
             echo "<p>Table empty</p>";
         } ?>
-        <h3>Remember me table</h3>
+        <h3>Remember me table 🍪</h3>
         <?php $allUsers = $myQueries->findAllRememberMe();
         if ($allUsers) { ?>
             <table>
@@ -177,7 +177,7 @@ if (!empty($_POST)) {
         <?php } else {
             echo "<p>Table empty</p>";
         } ?>
-        <h3>Password reset requests table</h3>
+        <h3>Password reset requests table 🤔</h3>
         <?php $allUsers = $myQueries->findAllPwdResetRequests();
         if ($allUsers) { ?>
             <table>

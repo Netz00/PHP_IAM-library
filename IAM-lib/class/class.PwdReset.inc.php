@@ -24,12 +24,55 @@ class PwdReset
 
         $this->pwdResetStorage->savePwdResetRequest($email, $selector, $hashedToken, $expires);
 
+
+        // Send an email
+
+        ob_start();
+?>
+        <html>
+
+        <body>
+            Open the following link to reset your password.
+            <a href="<?php echo $url; ?>">
+                <?php echo $url; ?>
+            </a>
+        </body>
+
+        </html>
+<?php
+        $html_text = ob_get_clean();
+
+        $from = SMTP_EMAIL;
         $to = $email;
-        $subject = "Password reset";
-        $message = $url;
-        $header = "Password reset requested";
-        $message = wordwrap($message, 200);
-        mail($to, $subject, $message, $header);
+        $subject = "Password reset request";
+
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = SMTP_HOST;                               // Specify main and backup SMTP servers
+        $mail->SMTPAuth = SMTP_AUTH;                               // Enable SMTP authentication
+        $mail->Username = SMTP_USERNAME;                      // SMTP username
+        $mail->Password = SMTP_PASSWORD;                      // SMTP password
+        $mail->SMTPSecure = SMTP_SECURE;                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = SMTP_PORT;                                    // TCP port to connect to
+
+        // $mail->addBCC("wgcraft.official@gmail.com", "CryptoExchange"); //enter admins mails
+        $mail->Priority = 2;
+
+        $mail->From = $from;
+        $mail->FromName = APP_TITLE;
+        $mail->addAddress($to);                               // Name is optional
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        $mail->Subject = $subject;
+        $mail->Body    = $html_text;
+
+        if ($mail->send())
+            header("Location: " . "/" . "?error=" . "Check your inbox (and spam also).",  true,  301);
+        else
+            header("Location: " . "/" . "?error=" . "Email couldn't be sent.",  true,  301);
+        exit;
     }
 
     function verifyRequest($selector, $validator)
