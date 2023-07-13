@@ -1,0 +1,101 @@
+:root {
+  --color-background-primary: #000000;
+  --color-background-secondary: #202020;
+
+  --color-text: #16ff00;
+  --color-border: #009b00;
+}
+
+body {
+  background: var(--color-background-primary);
+  color: var(--color-text);
+  max-width: 1024px;
+  margin: auto;
+  padding-top: 10px;
+}
+
+h2 {
+  margin: 0 0 20px 0;
+}
+.section {
+  background: var(--color-background-secondary);
+  padding: 20px 30px;
+  border-radius: 10px;
+  margin: 36px 0px;
+  min-height: 250px;
+  position: relative;
+}
+
+.single_form {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border);
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px 20px;
+  margin: 0px 40px 0 0;
+}
+
+.single_form:last-child {
+  margin: 0;
+}
+
+form > input {
+  display: block;
+  margin: 12px 0px;
+  background: inherit;
+  color: inherit;
+  padding: 5px;
+  border: 1px solid var(--color-border);
+}
+
+input[type="checkbox"]:not(checked) {
+  /* change "blue" browser chrome to yellow */
+  filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+}
+
+form input:focus {
+  outline: var(--color-text) solid 1px;
+  color: var(--color-text);
+}
+
+.logout {
+  top: 10px;
+  right: 20px;
+  position: absolute;
+}
+
+.section > h3 {
+  margin: 22px 0px 4px 0px;
+}
+
+input[type="submit"]:hover {
+  outline: var(--color-text) solid 1px;
+  color: var(--color-background-primary);
+  background: var(--color-text);
+}
+
+table,
+th,
+td {
+  border: 1px solid var(--color-border);
+}
+
+th,
+td {
+  padding-left: 12px;
+}
+
+table {
+  table-layout: fixed;
+  width: 900px;
+}
+
+table th {
+  text-align: start;
+}
+
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -109,6 +109,13 @@ ALTER TABLE `tbl_token_auth`
 --
 ALTER TABLE `users`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `users`
+  ADD CONSTRAINT `Username taken` UNIQUE (username); 
+ALTER TABLE `users`
+  ADD CONSTRAINT `Email taken` UNIQUE (email);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
