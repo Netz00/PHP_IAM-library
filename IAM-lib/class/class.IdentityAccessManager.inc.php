@@ -87,7 +87,7 @@ class IdentityAccessManager
 
         // If login or email are taken, mysqli will throw an error
 
-        $this->credentialsStorage->addUser(
+        $this->credentialsStorage->saveUser(
             $username,
             $email,
             $this->kdf->hash($password),

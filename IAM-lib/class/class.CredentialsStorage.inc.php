@@ -2,7 +2,7 @@
 
 interface CredentialsStorage
 {
-    function addUser($username, $email, $password, $ipAddress);
+    function saveUser($username, $email, $password, $ipAddress);
     function findUserByUsername($username);
     function findUserbyId($id);
     function findUserbyEmail($id);

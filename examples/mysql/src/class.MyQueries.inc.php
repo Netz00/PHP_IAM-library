@@ -3,7 +3,7 @@
 class MyQueries extends Db implements CredentialsStorage, PwdResetStorage, RememberMeStorage
 {
 
-    function addUser($username, $email, $password, $ipAddress)
+    function saveUser($username, $email, $password, $ipAddress)
     {
         $username = $this->quote($username);
         $email = $this->quote($email);
