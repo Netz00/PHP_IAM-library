@@ -16,7 +16,7 @@ services:
     container_name: mysql
     networks:
       - IAM-network
-    image: mariadb:10.4
+    image: mariadb:10.4.8
     environment:
       MYSQL_DATABASE: IAM-db
       MYSQL_ROOT_PASSWORD:
