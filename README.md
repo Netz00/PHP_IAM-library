@@ -1,6 +1,6 @@
 # PHP User Managment
 
-Simple storage detached identity and access managment library written in vanilla PHP.
+Simple storage-detached identity and access managment library written in vanilla PHP.
 
 Currently only session based authentication is supported, but it can be easily be updated to support token based authentication.
 
